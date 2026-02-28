@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HydroFlow Infinity | By Hirensai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #00e5ff; --founder-blue: #002d5c; --bg: #02040a; --glass: rgba(255,255,255,0.04); --border: rgba(255,255,255,0.1); --k-gold: #ffcc00; }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg); margin: 0; color: white; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* Navigation */
+        nav { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); background: rgba(10,10,10,0.85); backdrop-filter: blur(15px); padding: 12px 25px; border-radius: 100px; border: 1px solid var(--border); display: flex; gap: 15px; z-index: 1000; width: max-content; white-space: nowrap; }
+        nav a { color: #aaa; text-decoration: none; font-size: 0.65rem; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        nav a:hover, nav a.active-link { color: var(--primary); }
+
+        /* Page Handling */
+        .page { display: none; flex: 1; padding: 120px 20px 60px; animation: fadeIn 0.4s ease-out; width: 100%; }
+        .page.active { display: flex; flex-direction: column; align-items: center; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .wrapper { width: 100%; max-width: 1000px; }
+        h1, h2 { font-family: 'Space Grotesk'; letter-spacing: -2px; }
+        
+        /* Calculator Components */
+        .dash { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 30px; width: 100%; }
+        .panel { background: var(--glass); border: 1px solid var(--border); border-radius: 35px; padding: 40px; }
+        .slider-group { margin-bottom: 30px; }
+        .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .u-label { font-weight: 800; color: var(--primary); font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase; }
+        .u-val { font-weight: 800; font-size: 1rem; color: #fff; }
+        
+        .u-switch { display: flex; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 10px; border: 1px solid var(--border); margin-left: 10px; }
+        .u-btn { background: none; border: none; color: #555; font-size: 0.6rem; font-weight: 900; padding: 4px 10px; cursor: pointer; border-radius: 6px; transition: 0.2s; }
+        .u-btn.active { background: var(--primary); color: black; }
+
+        input[type=range] { width: 100%; accent-color: var(--primary); cursor: pointer; height: 6px; border-radius: 5px; background: rgba(255,255,255,0.1); outline: none; }
+        .res-box { background: linear-gradient(180deg, rgba(0,229,255,0.15), transparent); border: 1px solid var(--primary); border-radius: 40px; padding: 50px; text-align: center; display: flex; flex-direction: column; justify-content: center; }
+
+        .content-card { background: var(--glass); padding: 45px; border-radius: 35px; border: 1px solid var(--border); line-height: 1.8; margin-top: 25px; width: 100%; text-align: left; }
+        .accent-tag { color: var(--primary); font-weight: 800; text-transform: uppercase; font-size: 0.8rem; display: block; margin-bottom: 12px; letter-spacing: 1.5px; }
+
+        @media (max-width: 850px) { 
+            .dash { grid-template-columns: 1fr; } 
+            nav { width: 90%; padding: 12px 15px; overflow-x: auto; justify-content: flex-start; gap: 20px; scrollbar-width: none; }
+            nav::-webkit-scrollbar { display: none; }
+            .page { padding: 100px 15px 40px; }
+            .panel { padding: 25px; border-radius: 25px; }
+            .res-box { padding: 30px; border-radius: 30px; }
+            .content-card { padding: 25px; border-radius: 25px; }
+            h1 { font-size: 3rem !important; }
+            h2 { font-size: 2rem !important; }
+            #founder .wrapper div { padding: 30px !important; border-radius: 25px !important; }
+            #founder h2 { font-size: 2.5rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+<nav id="navbar">
+    <a onclick="showPage('home')" id="nav-home">Home</a>
+    <a onclick="showPage('calc')" id="nav-calc">Calculator</a>
+    <a onclick="showPage('mission')" id="nav-mission">Mission</a>
+    <a onclick="showPage('works')" id="nav-works">Logic</a>
+    <a onclick="showPage('matters')" id="nav-matters">Impact</a>
+    <a onclick="showPage('founder')" id="nav-founder">Founder</a>
+</nav>
+
+<section id="home" class="page active">
+    <div class="wrapper" style="text-align: center;">
+        <h1 style="font-size: clamp(3.5rem, 12vw, 6rem); font-family:'Space Grotesk'; margin: 0;">Hydro<span style="color:var(--primary)">Flow</span></h1>
+        <p style="font-size: 1.2rem; opacity: 0.6; margin-top: 20px;">Precision-engineered hydration by Hirensai.</p>
+        <button onclick="showPage('calc')" style="background:var(--primary); color:black; border:none; padding:18px 40px; border-radius:100px; font-weight:800; cursor:pointer; margin-top:30px; text-transform:uppercase; letter-spacing:1px;">Launch Calculator</button>
+    </div>
+</section>
+
+<section id="calc" class="page">
+    <div class="wrapper dash">
+        <div class="panel">
+            <h2 style="margin-top:0; font-family:'Space Grotesk'; font-size: 2.5rem;">The <span style="color:var(--primary)">Calculator</span></h2>
+            
+            <div class="slider-group">
+                <div class="slider-header"><span class="u-label">Biological Gender</span>
+                    <div class="u-switch">
+                        <button class="u-btn active" id="g-m" onclick="setG('m')">MALE</button>
+                        <button class="u-btn" id="g-f" onclick="setG('f')">FEMALE</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header">
+                    <div style="display:flex; align-items:center;"><span class="u-label">Weight</span>
+                        <div class="u-switch"><button class="u-btn active" id="w-kg" onclick="setW('kg')">KG</button><button class="u-btn" id="w-lbs" onclick="setW('lbs')">LBS</button></div>
+                    </div>
+                    <span id="wv" class="u-val">70 kg</span>
+                </div>
+                <input type="range" id="w" min="30" max="150" value="70" oninput="update()">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header">
+                    <div style="display:flex; align-items:center;"><span class="u-label">Height</span>
+                        <div class="u-switch"><button class="u-btn active" id="h-cm" onclick="setH('cm')">CM</button><button class="u-btn" id="h-ft" onclick="setH('ft')">FT</button></div>
+                    </div>
+                    <span id="hv" class="u-val">170 cm</span>
+                </div>
+                <input type="range" id="h" min="100" max="220" value="170" oninput="update()">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header"><span class="u-label">Exercise (Min)</span><span id="ev" class="u-val">60 m</span></div>
+                <input type="range" id="e" min="0" max="180" value="60" oninput="update()">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-header"><span class="u-label">Age (Yrs)</span><span id="av" class="u-val">14 yrs</span></div>
+                <input type="range" id="a" min="5" max="100" value="14" oninput="update()">
+            </div>
+        </div>
+
+        <div class="res-box">
+            <p style="margin:0; opacity:0.5; font-weight:800; font-size:0.7rem; letter-spacing:2px;">DAILY TARGET</p>
+            <p id="l" style="font-size: clamp(4rem, 12vw, 7rem); font-family:'Space Grotesk'; margin:0; color:var(--primary); font-weight:700;">0.0</p>
+            <p style="letter-spacing:5px; font-weight:800; font-size: 0.8rem; margin:0;">LITERS / DAY</p>
+        </div>
+    </div>
+</section>
+
+<section id="mission" class="page">
+    <div class="wrapper">
+        <h2 style="text-align: center;">Purpose & <span style="color:var(--primary)">Vision</span></h2>
+        <div class="content-card">
+            <span class="accent-tag">The Mission</span>
+            <p>Our mission is to promote healthy living by helping individuals understand and meet their daily hydration needs through a simple, accurate, and accessible digital hydration calculator. We aim to empower people of all ages to build better water-drinking habits using science-based recommendations and personalized insights.</p>
+            <span class="accent-tag" style="margin-top:30px;">The Vision</span>
+            <p>Our vision is to become a globally trusted hydration companion that encourages healthier lifestyles, prevents dehydration-related health issues, and uses smart technology to make wellness simple, engaging, and achievable for everyone.</p>
+        </div>
+    </div>
+</section>
+
+<section id="works" class="page">
+    <div class="wrapper">
+        <h2 style="text-align: center;">Scientific <span style="color:var(--primary)">Logic</span></h2>
+        <div class="content-card">
+            <span class="accent-tag">The Baseline Formula</span>
+            <p>The baseline formula calculates daily water needs using body weight. It multiplies weight (kg) by about 35 ml to estimate how much water the body needs under normal conditions.</p>
+            <span class="accent-tag" style="margin-top:30px;">Dynamic Adjustments</span>
+            <p>Gender can influence hydration because males generally have higher muscle mass and lower body fat compared to females. Since muscle contains more water than fat, males often require slightly more daily water on average. Male profiles receive a 10.5% scaling lift.</p>
+        </div>
+    </div>
+</section>
+
+<section id="matters" class="page">
+    <div class="wrapper">
+        <h2 style="text-align: center;">The <span style="color:var(--primary)">Impact</span></h2>
+        <div class="content-card">
+            <span class="accent-tag">Athletes</span>
+            <p>A hydration calculator helps athletes maintain peak performance by providing personalized fluid intake guidance based on activity level and conditions. Proper hydration improves endurance, recovery, and reduces the risk of fatigue and heat-related illness.</p>
+            <span class="accent-tag" style="margin-top:30px;">Individuals</span>
+            <p>For regular individuals, a hydration calculator supports overall health by encouraging sufficient daily water intake. It helps improve energy, focus, and digestion while preventing headaches and fatigue.</p>
+        </div>
+    </div>
+</section>
+
+<section id="founder" class="page">
+    <div class="wrapper">
+        <div style="background: linear-gradient(135deg, var(--founder-blue), #000); padding: 60px; border-radius: 45px; border: 1px solid var(--primary); text-align: left;">
+            <span style="background:var(--k-gold); color:black; padding:8px 18px; border-radius:10px; font-weight:800; font-size:0.75rem;">4X NATIONAL PLAYER | KARNATAKA STATE</span>
+            <h2 style="font-size: 4rem; margin: 20px 0;">HIRENSAI</h2>
+            <p style="font-size: 1.25rem; opacity: 0.9; line-height: 1.8;">I'm Hirensai, a 14-year-old developer and the founder of HydroFlow. As a 4x National Inline Hockey player representing Karnataka, I've spent my career learning that elite performance comes down to small, scientific details. I built this platform to bridge that gap, using code to bring professional-grade hydration precision to athletes and students.</p>
+        </div>
+    </div>
+</section>
+
+<script>
+    let wU = 'kg', hU = 'cm', gD = 'm';
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        const target = document.getElementById(id);
+        if(target) target.classList.add('active');
+        document.querySelectorAll('nav a').forEach(a => a.classList.remove('active-link'));
+        const navItem = document.getElementById('nav-' + id);
+        if(navItem) navItem.classList.add('active-link');
+        window.scrollTo(0,0);
+    }
+
+    function setG(g) { gD = g; document.getElementById('g-m').classList.toggle('active', g === 'm'); document.getElementById('g-f').classList.toggle('active', g === 'f'); update(); }
+
+    function setW(u) { 
+        wU = u; 
+        const s = document.getElementById('w');
+        document.getElementById('w-kg').classList.toggle('active', u==='kg');
+        document.getElementById('w-lbs').classList.toggle('active', u==='lbs');
+        if(u==='kg') { s.min = 30; s.max = 150; s.value = 70; } else { s.min = 60; s.max = 330; s.value = 154; }
+        update(); 
+    }
+
+    function setH(u) { 
+        hU = u; 
+        const s = document.getElementById('h');
+        document.getElementById('h-cm').classList.toggle('active', u==='cm');
+        document.getElementById('h-ft').classList.toggle('active', u==='ft');
+        if(u==='cm') { s.min = 100; s.max = 220; s.value = 170; } else { s.min = 3; s.max = 8; s.value = 5.5; s.step = 0.01; }
+        update(); 
+    }
+
+    function update() {
+        let w = parseFloat(document.getElementById('w').value);
+        let h = parseFloat(document.getElementById('h').value);
+        const e = parseFloat(document.getElementById('e').value);
+        const a = parseFloat(document.getElementById('a').value);
+        
+        // Weight Display & Conversion
+        if(wU !== 'kg') { w *= 0.453592; }
+        document.getElementById('wv').innerText = wU === 'kg' ? w + " kg" : document.getElementById('w').value + " lbs";
+        
+        // Height Display & Conversion
+        let hCm = h;
+        if(hU === 'cm') { 
+            document.getElementById('hv').innerText = h + " cm"; 
+        } else { 
+            let ft = Math.floor(h), inc = Math.round((h-ft)*12); 
+            document.getElementById('hv').innerText = ft + "'" + inc + "\""; 
+            hCm = h * 30.48; 
+        }
+        
+        document.getElementById('ev').innerText = e + " m"; 
+        document.getElementById('av').innerText = a + " yrs";
+        
+        // CALCULATION LOGIC
+        // 1. Weight Baseline (33ml per kg)
+        let res = (w * 0.033);
+        
+        // 2. Height Impact (Adjusts based on stature/surface area)
+        res += ((hCm - 150) * 0.015); 
+
+        // 3. Gender Scaling (10.5% Male Lift)
+        if(gD === 'm') res *= 1.105;
+        
+        // 4. Exercise Impact (350ml per 30 mins)
+        res += (e / 30 * 0.35);
+        
+        // 5. FIXED AGE LOGIC (Universal Impact)
+        // High Demand for Youth (under 20), gradual metabolic shift for adults
+        if(a < 20) {
+            res += (0.4 + ((20 - a) * 0.04)); 
+        } else {
+            res -= ((a - 20) * 0.008);
+        }
+
+        // Safety cap
+        if(res < 1.2) res = 1.2;
+
+        document.getElementById('l').innerText = res.toFixed(1);
+    }
+    
+    showPage('home');
+    update();
+</script>
+
+</body>
+</html>
